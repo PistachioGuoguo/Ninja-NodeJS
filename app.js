@@ -8,7 +8,14 @@ app.set('view engine', 'ejs'); // under views folder
 
 // get 
 app.get('/', (req, res) => {
-    res.render('index', {title: 'Home'});
+
+    const blogs = [
+        {title: 'I am happy today', snippet: 'Happy'},
+        {title: 'Good luck in future', snippet: 'You got it!'},
+        {title: 'Pistachio is cute', snippet: 'Cute pistachios'},
+    ]
+
+    res.render('index', {title: 'Home', blogs});
 });
 
 app.get('/about', (req, res) => {
