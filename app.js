@@ -36,7 +36,7 @@ app.get('/about-us', (req, res) => {
 app.get('/blogs', (req, res) => {
     Blog.find().sort({createdAt : -1}) // sort by desc createTime
         .then((result) => {
-            console.log(result);
+            // console.log(result);
             res.render('index', {title : 'All Blogs', blogs: result})
         })
         .catch( err => {
@@ -58,9 +58,37 @@ app.post('/blogs', (req, res) => {
 })
 
 
+// this one must be put in front of 'get('blogs/:id')', or will crash
 app.get('/blogs/create', (req, res) => {
     res.render('create', {title: 'Create a new Blog'});
 });
+
+
+
+// route parameters for single blog
+app.get('/blogs/:id', (req, res) => {
+    const id = req.params.id;
+    Blog.findById(id)
+        .then(result => {
+            res.render('details', {blog: result, title: 'Blog Details'})
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});
+
+
+app.delete('/blogs/:id', (req, res) => {
+    const id = req.params.id;
+    Blog.findByIdAndDelete(id)
+        .then(result => {
+            res.json({redirect: '/blogs'})
+        })
+        .catch(err => {
+            console.log(err);
+        })
+});
+
 
 app.use((req, res) => {
     res.status(404).render('404', {title: 'Home'});  
